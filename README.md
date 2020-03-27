@@ -1,16 +1,24 @@
 # flutter_erx
 
-A new Flutter project.
+The user can create custom inputs for different measurements .The user can select from different input types which also has validation as follows;
+1. Text
+2. Number
+3. Decimal
+4. Choice (Options)
 
-## Getting Started
+## Packages used
+- Provider: for passing down state.
+- freezed: to creatge model classes and union types
+- flutter hooks 
+- a auto_route : to generate helper classes and methods for navigation
 
-This project is a starting point for a Flutter application.
+## screen shots
+![ezgif com-video-to-gif (2)](https://user-images.githubusercontent.com/31307345/77759928-96a5bb00-705b-11ea-8749-3402654b7e2a.gif)
 
-A few resources to get you started if this is your first Flutter project:
+![2020_03_27_17 33 52](https://user-images.githubusercontent.com/31307345/77761488-28162c80-705e-11ea-99ac-4bff8a2d693a.jpg)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![2020_03_27_17 33 59](https://user-images.githubusercontent.com/31307345/77761544-3f551a00-705e-11ea-8e3d-db10bcaa4f0b.jpg)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![2020_03_27_17 35 15](https://user-images.githubusercontent.com/31307345/77761595-4e3bcc80-705e-11ea-9603-932a730e3b78.jpg)
+
+![2020_03_27_17 35 28](https://user-images.githubusercontent.com/31307345/77761644-5eec4280-705e-11ea-9c08-26ec42294d6d.jpg)
