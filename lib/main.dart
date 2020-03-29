@@ -17,12 +17,14 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         builder: ExtendedNavigator<Router>(router: Router()),
-        // this        // routes: {
-        //   '/': (_) => HomePage(),
-        //   '/newInput': (_) => NewInputPage(),
-        //   '/addMeasurement': (_) => AddMeasurementDataPage(),
-        // },
         theme: ThemeData(
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.redAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+              side: BorderSide(color: Colors.redAccent),
+            ),
+          ),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(),
           ),

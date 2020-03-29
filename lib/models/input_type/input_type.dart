@@ -9,4 +9,5 @@ abstract class MyInputType with _$MyInputType {
   factory MyInputType.number() = MyInputTypeNumber;
   factory MyInputType.decimal() = MyInputTypeDecimal;
   factory MyInputType.choice(List<String> values) = MyInputTypeChoice;
+  factory MyInputType.breathCount() = MyInputTypeBreathCount;
 }

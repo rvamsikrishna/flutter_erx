@@ -2,12 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_erx/models/input_type/input_type.dart';
 
 import 'package:flutter_erx/models/measurement/measurement.dart';
+import 'package:provider/provider.dart';
 
 class Measurements extends ChangeNotifier {
   List<Measurement> items = [];
 
   Measurements() {
     items.addAll(_defaultMeasurements);
+  }
+
+  static Measurements of(BuildContext context) {
+    return Provider.of<Measurements>(context, listen: false);
   }
 
   void addItem(Measurement measurement) {
@@ -44,5 +49,20 @@ List<Measurement> _defaultMeasurements = [
     units: 'kg',
     value: 85,
     inputType: MyInputType.number(),
+  ),
+  Measurement(
+    title: 'Breath count',
+    description: '''
+      Instructions: 
+
+      1. Lie down flat on your back.
+      2. Place the mobile with screen facing up on your abdomen.
+      3. Tap the start button and breathe normally after beep sound.
+      4. Once finished you'll hear a beep sound again.
+      5. Tap the done button to rcord your breaths per minute.
+    ''',
+    units: 'bpm',
+    value: null,
+    inputType: MyInputType.breathCount(),
   ),
 ];

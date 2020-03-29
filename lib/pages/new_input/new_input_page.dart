@@ -154,6 +154,7 @@ class NewInputPage extends HookWidget {
           text: (v) => v,
           number: (v) => v,
           decimal: (v) => v,
+          breathCount: (v) => v,
           choice: (values) => values.copyWith(values: _inputState.choices),
         ),
       ),

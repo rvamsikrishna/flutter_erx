@@ -29,6 +29,10 @@ class _$MyInputTypeTearOff {
       values,
     );
   }
+
+  MyInputTypeBreathCount breathCount() {
+    return MyInputTypeBreathCount();
+  }
 }
 
 // ignore: unused_element
@@ -41,6 +45,7 @@ mixin _$MyInputType {
     @required Result number(),
     @required Result decimal(),
     @required Result choice(List<String> values),
+    @required Result breathCount(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -48,6 +53,7 @@ mixin _$MyInputType {
     Result number(),
     Result decimal(),
     Result choice(List<String> values),
+    Result breathCount(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -56,6 +62,7 @@ mixin _$MyInputType {
     @required Result number(MyInputTypeNumber value),
     @required Result decimal(MyInputTypeDecimal value),
     @required Result choice(MyInputTypeChoice value),
+    @required Result breathCount(MyInputTypeBreathCount value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -63,6 +70,7 @@ mixin _$MyInputType {
     Result number(MyInputTypeNumber value),
     Result decimal(MyInputTypeDecimal value),
     Result choice(MyInputTypeChoice value),
+    Result breathCount(MyInputTypeBreathCount value),
     @required Result orElse(),
   });
 }
@@ -129,11 +137,13 @@ class _$MyInputTypeText
     @required Result number(),
     @required Result decimal(),
     @required Result choice(List<String> values),
+    @required Result breathCount(),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return text();
   }
 
@@ -144,6 +154,7 @@ class _$MyInputTypeText
     Result number(),
     Result decimal(),
     Result choice(List<String> values),
+    Result breathCount(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -160,11 +171,13 @@ class _$MyInputTypeText
     @required Result number(MyInputTypeNumber value),
     @required Result decimal(MyInputTypeDecimal value),
     @required Result choice(MyInputTypeChoice value),
+    @required Result breathCount(MyInputTypeBreathCount value),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return text(this);
   }
 
@@ -175,6 +188,7 @@ class _$MyInputTypeText
     Result number(MyInputTypeNumber value),
     Result decimal(MyInputTypeDecimal value),
     Result choice(MyInputTypeChoice value),
+    Result breathCount(MyInputTypeBreathCount value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -237,11 +251,13 @@ class _$MyInputTypeNumber
     @required Result number(),
     @required Result decimal(),
     @required Result choice(List<String> values),
+    @required Result breathCount(),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return number();
   }
 
@@ -252,6 +268,7 @@ class _$MyInputTypeNumber
     Result number(),
     Result decimal(),
     Result choice(List<String> values),
+    Result breathCount(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -268,11 +285,13 @@ class _$MyInputTypeNumber
     @required Result number(MyInputTypeNumber value),
     @required Result decimal(MyInputTypeDecimal value),
     @required Result choice(MyInputTypeChoice value),
+    @required Result breathCount(MyInputTypeBreathCount value),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return number(this);
   }
 
@@ -283,6 +302,7 @@ class _$MyInputTypeNumber
     Result number(MyInputTypeNumber value),
     Result decimal(MyInputTypeDecimal value),
     Result choice(MyInputTypeChoice value),
+    Result breathCount(MyInputTypeBreathCount value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -345,11 +365,13 @@ class _$MyInputTypeDecimal
     @required Result number(),
     @required Result decimal(),
     @required Result choice(List<String> values),
+    @required Result breathCount(),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return decimal();
   }
 
@@ -360,6 +382,7 @@ class _$MyInputTypeDecimal
     Result number(),
     Result decimal(),
     Result choice(List<String> values),
+    Result breathCount(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -376,11 +399,13 @@ class _$MyInputTypeDecimal
     @required Result number(MyInputTypeNumber value),
     @required Result decimal(MyInputTypeDecimal value),
     @required Result choice(MyInputTypeChoice value),
+    @required Result breathCount(MyInputTypeBreathCount value),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return decimal(this);
   }
 
@@ -391,6 +416,7 @@ class _$MyInputTypeDecimal
     Result number(MyInputTypeNumber value),
     Result decimal(MyInputTypeDecimal value),
     Result choice(MyInputTypeChoice value),
+    Result breathCount(MyInputTypeBreathCount value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -476,11 +502,13 @@ class _$MyInputTypeChoice
     @required Result number(),
     @required Result decimal(),
     @required Result choice(List<String> values),
+    @required Result breathCount(),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return choice(values);
   }
 
@@ -491,6 +519,7 @@ class _$MyInputTypeChoice
     Result number(),
     Result decimal(),
     Result choice(List<String> values),
+    Result breathCount(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -507,11 +536,13 @@ class _$MyInputTypeChoice
     @required Result number(MyInputTypeNumber value),
     @required Result decimal(MyInputTypeDecimal value),
     @required Result choice(MyInputTypeChoice value),
+    @required Result breathCount(MyInputTypeBreathCount value),
   }) {
     assert(text != null);
     assert(number != null);
     assert(decimal != null);
     assert(choice != null);
+    assert(breathCount != null);
     return choice(this);
   }
 
@@ -522,6 +553,7 @@ class _$MyInputTypeChoice
     Result number(MyInputTypeNumber value),
     Result decimal(MyInputTypeDecimal value),
     Result choice(MyInputTypeChoice value),
+    Result breathCount(MyInputTypeBreathCount value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -537,4 +569,118 @@ abstract class MyInputTypeChoice implements MyInputType {
 
   List<String> get values;
   $MyInputTypeChoiceCopyWith<MyInputTypeChoice> get copyWith;
+}
+
+abstract class $MyInputTypeBreathCountCopyWith<$Res> {
+  factory $MyInputTypeBreathCountCopyWith(MyInputTypeBreathCount value,
+          $Res Function(MyInputTypeBreathCount) then) =
+      _$MyInputTypeBreathCountCopyWithImpl<$Res>;
+}
+
+class _$MyInputTypeBreathCountCopyWithImpl<$Res>
+    extends _$MyInputTypeCopyWithImpl<$Res>
+    implements $MyInputTypeBreathCountCopyWith<$Res> {
+  _$MyInputTypeBreathCountCopyWithImpl(MyInputTypeBreathCount _value,
+      $Res Function(MyInputTypeBreathCount) _then)
+      : super(_value, (v) => _then(v as MyInputTypeBreathCount));
+
+  @override
+  MyInputTypeBreathCount get _value => super._value as MyInputTypeBreathCount;
+}
+
+class _$MyInputTypeBreathCount
+    with DiagnosticableTreeMixin
+    implements MyInputTypeBreathCount {
+  _$MyInputTypeBreathCount();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'MyInputType.breathCount()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'MyInputType.breathCount'));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is MyInputTypeBreathCount);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result text(),
+    @required Result number(),
+    @required Result decimal(),
+    @required Result choice(List<String> values),
+    @required Result breathCount(),
+  }) {
+    assert(text != null);
+    assert(number != null);
+    assert(decimal != null);
+    assert(choice != null);
+    assert(breathCount != null);
+    return breathCount();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result text(),
+    Result number(),
+    Result decimal(),
+    Result choice(List<String> values),
+    Result breathCount(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (breathCount != null) {
+      return breathCount();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result text(MyInputTypeText value),
+    @required Result number(MyInputTypeNumber value),
+    @required Result decimal(MyInputTypeDecimal value),
+    @required Result choice(MyInputTypeChoice value),
+    @required Result breathCount(MyInputTypeBreathCount value),
+  }) {
+    assert(text != null);
+    assert(number != null);
+    assert(decimal != null);
+    assert(choice != null);
+    assert(breathCount != null);
+    return breathCount(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result text(MyInputTypeText value),
+    Result number(MyInputTypeNumber value),
+    Result decimal(MyInputTypeDecimal value),
+    Result choice(MyInputTypeChoice value),
+    Result breathCount(MyInputTypeBreathCount value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (breathCount != null) {
+      return breathCount(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MyInputTypeBreathCount implements MyInputType {
+  factory MyInputTypeBreathCount() = _$MyInputTypeBreathCount;
 }
