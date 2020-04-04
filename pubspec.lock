@@ -345,13 +345,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1+2"
-  noise_meter:
-    dependency: "direct main"
-    description:
-      name: noise_meter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
   package_config:
     dependency: transitive
     description:
@@ -464,6 +457,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.23.1"
+  sensors:
+    dependency: "direct main"
+    description:
+      name: sensors
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1+10"
   shelf:
     dependency: transitive
     description:
@@ -590,4 +590,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.7.0 <3.0.0"
-  flutter: ">=1.12.8 <2.0.0"
+  flutter: ">=1.12.13+hotfix.5 <2.0.0"

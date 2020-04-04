@@ -7,7 +7,7 @@ import 'package:flutter_erx/pages/breath_count/widgets/start_button.dart';
 import 'package:flutter_erx/state/measurements.dart';
 import 'package:flutter_erx/widgets/measurement_value.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:noise_meter/noise_meter.dart';
+import 'package:sensors/sensors.dart';
 
 class BreathCountPage extends StatefulWidget {
   final Measurement measurement;
@@ -21,15 +21,14 @@ class BreathCountPage extends StatefulWidget {
 }
 
 class _BreathCountPageState extends State<BreathCountPage> {
-  StreamSubscription<NoiseReading> _noiseSubscription;
-  NoiseMeter _noiseMeter;
+  StreamSubscription<AccelerometerEvent> _accelerationSub;
   List<double> _breaths = [];
   Timer _breathsTimer;
   AudioPlayer _audioPlayer;
   int _totalBreaths = 0;
   final int _timerDurationInSecs = 60;
-  double _prevNoise;
-  bool _noiseDbIncreasing = false;
+  double _prevZ;
+  bool _accerating = false;
 
   @override
   void initState() {
@@ -39,32 +38,32 @@ class _BreathCountPageState extends State<BreathCountPage> {
     _audioPlayer.setSpeed(2.0);
   }
 
-  void _onEvent(NoiseReading noiseReading) {
-    final double decibels = noiseReading.db;
+  void _onEvent(AccelerometerEvent acceleration) {
+    final double z = acceleration.z;
     if (_breaths.length < 2) {
-      _breaths.add(decibels);
+      _breaths.add(z);
       if (_breaths.length == 2) {
-        _noiseDbIncreasing = _breaths[0] < _breaths[1];
-        _prevNoise = decibels;
+        _accerating = _breaths[0] < _breaths[1];
+        _prevZ = z;
       }
       return;
     }
-    if (_noiseDbIncreasing) {
-      if (decibels > _prevNoise) {
-        _breaths[_breaths.length - 1] = decibels;
-      } else if (decibels < _prevNoise) {
-        _breaths.add(decibels);
-        _noiseDbIncreasing = false;
+    if (_accerating) {
+      if (z > _prevZ) {
+        _breaths[_breaths.length - 1] = z;
+      } else if (z < _prevZ) {
+        _breaths.add(z);
+        _accerating = false;
       }
     } else {
-      if (decibels < _prevNoise) {
-        _breaths[_breaths.length - 1] = decibels;
-      } else if (decibels > _prevNoise) {
-        _breaths.add(decibels);
-        _noiseDbIncreasing = true;
+      if (z < _prevZ) {
+        _breaths[_breaths.length - 1] = z;
+      } else if (z > _prevZ) {
+        _breaths.add(z);
+        _accerating = true;
       }
     }
-    _prevNoise = decibels;
+    _prevZ = z;
 
     setState(() {
       _totalBreaths = (_breaths.length / 2).floor();
@@ -73,7 +72,7 @@ class _BreathCountPageState extends State<BreathCountPage> {
 
   @override
   void dispose() {
-    _noiseSubscription?.cancel();
+    _accelerationSub?.cancel();
     _breathsTimer?.cancel();
     _audioPlayer.dispose();
     super.dispose();
@@ -148,8 +147,7 @@ class _BreathCountPageState extends State<BreathCountPage> {
         _breaths.clear();
       }
 
-      _noiseMeter = NoiseMeter();
-      _noiseSubscription = _noiseMeter.noiseStream.listen(_onEvent);
+      _accelerationSub = accelerometerEvents.listen(_onEvent);
       _breathsTimer = Timer(Duration(seconds: _timerDurationInSecs), () {
         _stopBreathCounts();
         _playSound();
@@ -165,9 +163,8 @@ class _BreathCountPageState extends State<BreathCountPage> {
   }
 
   void _stopBreathCounts() {
-    _noiseMeter = null;
-    _noiseSubscription.cancel();
-    _noiseSubscription = null;
+    _accelerationSub.cancel();
+    _accelerationSub = null;
     _breathsTimer.cancel();
     _breathsTimer = null;
     setState(() {});

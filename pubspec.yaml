@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  noise_meter: ^1.0.1
+  sensors: ^0.4.1+10
   freezed_annotation: ^0.7.1
   provider: ^4.0.4
   auto_route: ^0.4.2
