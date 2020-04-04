@@ -3,7 +3,6 @@ import 'package:flutter_erx/models/measurement/measurement.dart';
 import 'package:flutter_erx/pages/add_measurement_data/widgets/choice_select.dart';
 import 'package:flutter_erx/pages/add_measurement_data/widgets/input.dart';
 import 'package:flutter_erx/state/measurements.dart';
-import 'package:provider/provider.dart';
 
 class AddMeasurementDataPage extends StatefulWidget {
   final Measurement measurement;

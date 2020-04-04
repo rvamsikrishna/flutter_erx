@@ -7,8 +7,7 @@ import 'package:flutter_erx/pages/breath_count/widgets/start_button.dart';
 import 'package:flutter_erx/state/measurements.dart';
 import 'package:flutter_erx/widgets/measurement_value.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:provider/provider.dart';
-import 'package:sensors/sensors.dart';
+import 'package:noise_meter/noise_meter.dart';
 
 class BreathCountPage extends StatefulWidget {
   final Measurement measurement;
@@ -22,14 +21,15 @@ class BreathCountPage extends StatefulWidget {
 }
 
 class _BreathCountPageState extends State<BreathCountPage> {
-  StreamSubscription _accelerometerSub;
-  List<BreathType> _breaths = [];
-  double _z = 0;
+  StreamSubscription<NoiseReading> _noiseSubscription;
+  NoiseMeter _noiseMeter;
+  List<double> _breaths = [];
   Timer _breathsTimer;
   AudioPlayer _audioPlayer;
   int _totalBreaths = 0;
   final int _timerDurationInSecs = 60;
-  double x = 0;
+  double _prevNoise;
+  bool _noiseDbIncreasing = false;
 
   @override
   void initState() {
@@ -39,47 +39,33 @@ class _BreathCountPageState extends State<BreathCountPage> {
     _audioPlayer.setSpeed(2.0);
   }
 
-  void _onEvent(UserAccelerometerEvent event) {
-    setState(() {
-      x = event.z;
-    });
-    final double zAcceleration = event.z;
-
-    // if (_z == 0) {
-    // _z = zAcceleration;
-    // }
-
-    if (zAcceleration > _z) {
-      if (_breaths.isEmpty) {
-        _breaths.add(BreathType.inhale(_z));
-      } else {
-        if (_breaths.last is BreathTypeInhale) {
-          _breaths.add(BreathType.exhale(_z));
-        }
+  void _onEvent(NoiseReading noiseReading) {
+    final double decibels = noiseReading.db;
+    if (_breaths.length < 2) {
+      _breaths.add(decibels);
+      if (_breaths.length == 2) {
+        _noiseDbIncreasing = _breaths[0] < _breaths[1];
+        _prevNoise = decibels;
       }
-      // _z = zAcceleration;
+      return;
+    }
+    if (_noiseDbIncreasing) {
+      if (decibels > _prevNoise) {
+        _breaths[_breaths.length - 1] = decibels;
+      } else if (decibels < _prevNoise) {
+        _breaths.add(decibels);
+        _noiseDbIncreasing = false;
+      }
     } else {
-      if (_breaths.isEmpty) {
-        _breaths.add(BreathType.inhale(_z));
-      } else {
-        if (_breaths.last is BreathTypeExhale) {
-          _breaths.add(BreathType.inhale(_z));
-        }
+      if (decibels < _prevNoise) {
+        _breaths[_breaths.length - 1] = decibels;
+      } else if (decibels > _prevNoise) {
+        _breaths.add(decibels);
+        _noiseDbIncreasing = true;
       }
     }
-    _z = zAcceleration;
+    _prevNoise = decibels;
 
-    // if (zAcceleration < _z) {
-    //   _z = zAcceleration;
-    // } else {
-    //   if (_breaths.isEmpty) {
-    //     _breaths.add(BreathType.inhale(_z));
-    //   } else {
-    //     if (_breaths.last is BreathTypeInhale) {
-    //       _breaths.add(BreathType.exhale(_z));
-    //     }
-    //   }
-    // }
     setState(() {
       _totalBreaths = (_breaths.length / 2).floor();
     });
@@ -87,7 +73,7 @@ class _BreathCountPageState extends State<BreathCountPage> {
 
   @override
   void dispose() {
-    _accelerometerSub?.cancel();
+    _noiseSubscription?.cancel();
     _breathsTimer?.cancel();
     _audioPlayer.dispose();
     super.dispose();
@@ -142,7 +128,6 @@ class _BreathCountPageState extends State<BreathCountPage> {
               ),
             ),
             Spacer(),
-            Text(x.toString()),
             RaisedButton(
               child: Text('Done'),
               textColor: Colors.white,
@@ -163,8 +148,8 @@ class _BreathCountPageState extends State<BreathCountPage> {
         _breaths.clear();
       }
 
-      _accelerometerSub = userAccelerometerEvents.listen(_onEvent);
-
+      _noiseMeter = NoiseMeter();
+      _noiseSubscription = _noiseMeter.noiseStream.listen(_onEvent);
       _breathsTimer = Timer(Duration(seconds: _timerDurationInSecs), () {
         _stopBreathCounts();
         _playSound();
@@ -180,8 +165,9 @@ class _BreathCountPageState extends State<BreathCountPage> {
   }
 
   void _stopBreathCounts() {
-    _accelerometerSub.cancel();
-    _accelerometerSub = null;
+    _noiseMeter = null;
+    _noiseSubscription.cancel();
+    _noiseSubscription = null;
     _breathsTimer.cancel();
     _breathsTimer = null;
     setState(() {});
