@@ -11,11 +11,13 @@ import 'package:flutter_erx/pages/home/home_page.dart';
 import 'package:flutter_erx/pages/new_input/new_input_page.dart';
 import 'package:flutter_erx/pages/add_measurement_data/add_measurement_data.dart';
 import 'package:flutter_erx/models/measurement/measurement.dart';
+import 'package:flutter_erx/pages/breath_count/breath_count_page.dart';
 
 abstract class Routes {
   static const home = '/';
   static const newInputPage = '/new-input-page';
   static const addMeasurementDataPage = '/add-measurement-data-page';
+  static const breathCountPage = '/breath-count-page';
 }
 
 class Router extends RouterBase {
@@ -49,6 +51,17 @@ class Router extends RouterBase {
               key: typedArgs.key, measurement: typedArgs.measurement),
           settings: settings,
         );
+      case Routes.breathCountPage:
+        if (hasInvalidArgs<BreathCountPageArguments>(args)) {
+          return misTypedArgsRoute<BreathCountPageArguments>(args);
+        }
+        final typedArgs =
+            args as BreathCountPageArguments ?? BreathCountPageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (_) => BreathCountPage(
+              key: typedArgs.key, measurement: typedArgs.measurement),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -64,4 +77,11 @@ class AddMeasurementDataPageArguments {
   final Key key;
   final Measurement measurement;
   AddMeasurementDataPageArguments({this.key, @required this.measurement});
+}
+
+//BreathCountPage arguments holder class
+class BreathCountPageArguments {
+  final Key key;
+  final Measurement measurement;
+  BreathCountPageArguments({this.key, this.measurement});
 }

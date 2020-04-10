@@ -3,7 +3,6 @@ import 'package:flutter_erx/models/measurement/measurement.dart';
 import 'package:flutter_erx/pages/add_measurement_data/widgets/choice_select.dart';
 import 'package:flutter_erx/pages/add_measurement_data/widgets/input.dart';
 import 'package:flutter_erx/state/measurements.dart';
-import 'package:provider/provider.dart';
 
 class AddMeasurementDataPage extends StatefulWidget {
   final Measurement measurement;
@@ -62,12 +61,7 @@ class _AddMeasurementDataPageState extends State<AddMeasurementDataPage> {
                       RaisedButton(
                         child: Text('Done'),
                         textColor: Colors.white,
-                        color: Colors.redAccent,
                         onPressed: () => _modify(context),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.redAccent),
-                        ),
                       ),
                     ],
                   ),
@@ -84,7 +78,7 @@ class _AddMeasurementDataPageState extends State<AddMeasurementDataPage> {
     if (_formKey.currentState != null && !_formKey.currentState.validate())
       return;
     if (_value == null) return;
-    final Measurements measurements = Provider.of(context, listen: false);
+    final Measurements measurements = Measurements.of(context);
     measurements.modifyMeasurement(
       oldMeasurement: widget.measurement,
       newMeasurement: widget.measurement

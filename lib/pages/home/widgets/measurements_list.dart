@@ -30,10 +30,21 @@ class MeasurementsList extends StatelessWidget {
                     )
                   : Text('Add'),
               onTap: () {
-                ExtendedNavigator.of(context).pushNamed(
-                  Routes.addMeasurementDataPage,
-                  arguments:
-                      AddMeasurementDataPageArguments(measurement: measurement),
+                measurement.inputType.maybeWhen(
+                  breathCount: () {
+                    ExtendedNavigator.of(context).pushNamed(
+                      Routes.breathCountPage,
+                      arguments:
+                          BreathCountPageArguments(measurement: measurement),
+                    );
+                  },
+                  orElse: () {
+                    ExtendedNavigator.of(context).pushNamed(
+                      Routes.addMeasurementDataPage,
+                      arguments: AddMeasurementDataPageArguments(
+                          measurement: measurement),
+                    );
+                  },
                 );
               },
             );

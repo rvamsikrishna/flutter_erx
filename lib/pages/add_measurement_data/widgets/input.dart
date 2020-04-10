@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erx/models/measurement/measurement.dart';
+import 'package:flutter_erx/widgets/measurement_value.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class MeasurementInput extends HookWidget {
@@ -26,67 +27,43 @@ class MeasurementInput extends HookWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        ClipRRect(
-          borderRadius: BorderRadius.circular(40.0),
-          child: Container(
-            height: 60.0,
-            child: Form(
-              key: formKey,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextFormField(
-                      onChanged: (value) {
-                        _error.value = null;
-                        onChanged(value, _error.value != null);
-                      },
-                      controller: _textEditingController,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24.0,
-                      ),
-                      decoration: InputDecoration(
-                        border: _buildInputBorder(color: Colors.grey),
-                        errorBorder: _buildInputBorder(
-                            color: Theme.of(context).errorColor),
-                      ),
-                      keyboardType: measurement.inputType.maybeWhen(
-                        text: () => TextInputType.text,
-                        number: () => TextInputType.number,
-                        decimal: () => TextInputType.number,
-                        orElse: () => TextInputType.text,
-                      ),
-                      autovalidate: true,
-                      validator: (String v) {
-                        if (v.isEmpty) _error.value = 'Enter non-empty value!';
-                        _error.value = measurement.inputType.maybeWhen(
-                          number: () => v.contains('.')
-                              ? 'Enter a non-decimal number.'
-                              : null,
-                          orElse: () => null,
-                        );
-                        onChanged(v, _error.value != null);
-
-                        return null;
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: 100.0,
-                    color: Colors.grey,
-                    alignment: Alignment.center,
-                    child: Text(
-                      measurement.units,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                ],
+        MeasurementValue(
+          unitText: measurement.units,
+          child: Form(
+            key: formKey,
+            child: TextFormField(
+              onChanged: (value) {
+                _error.value = null;
+                onChanged(value, _error.value != null);
+              },
+              controller: _textEditingController,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24.0,
               ),
+              decoration: InputDecoration(
+                border: _buildInputBorder(),
+                errorBorder:
+                    _buildInputBorder(color: Theme.of(context).errorColor),
+              ),
+              keyboardType: measurement.inputType.maybeWhen(
+                text: () => TextInputType.text,
+                number: () => TextInputType.number,
+                decimal: () => TextInputType.number,
+                orElse: () => TextInputType.text,
+              ),
+              autovalidate: true,
+              validator: (String v) {
+                if (v.isEmpty) _error.value = 'Enter non-empty value!';
+                _error.value = measurement.inputType.maybeWhen(
+                  number: () =>
+                      v.contains('.') ? 'Enter a non-decimal number.' : null,
+                  orElse: () => null,
+                );
+                onChanged(v, _error.value != null);
+
+                return null;
+              },
             ),
           ),
         ),
@@ -107,9 +84,11 @@ class MeasurementInput extends HookWidget {
 
   _buildInputBorder({Color color}) {
     return OutlineInputBorder(
-      borderSide: BorderSide(color: color),
+      borderSide: color == null ? BorderSide.none : BorderSide(color: color),
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40.0), bottomLeft: Radius.circular(40.0)),
+        topLeft: Radius.circular(40.0),
+        bottomLeft: Radius.circular(40.0),
+      ),
     );
   }
 }
