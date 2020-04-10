@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_erx/models/breath_type/breath_type.dart';
 import 'package:flutter_erx/models/measurement/measurement.dart';
 import 'package:flutter_erx/pages/breath_count/widgets/start_button.dart';
+import 'package:flutter_erx/state/breath_count.dart';
 import 'package:flutter_erx/state/measurements.dart';
 import 'package:flutter_erx/widgets/measurement_value.dart';
 import 'package:just_audio/just_audio.dart';
@@ -22,52 +22,19 @@ class BreathCountPage extends StatefulWidget {
 
 class _BreathCountPageState extends State<BreathCountPage> {
   StreamSubscription<AccelerometerEvent> _accelerationSub;
-  List<double> _breaths = [];
   Timer _breathsTimer;
   AudioPlayer _audioPlayer;
-  int _totalBreaths = 0;
   final int _timerDurationInSecs = 60;
-  double _prevZ;
-  bool _accerating = false;
+  BreathCount _breathCount;
 
   @override
   void initState() {
     super.initState();
+    _breathCount = BreathCount();
+
     _audioPlayer = AudioPlayer();
     _audioPlayer.setAsset('assets/sounds/notify.mp3');
     _audioPlayer.setSpeed(2.0);
-  }
-
-  void _onEvent(AccelerometerEvent acceleration) {
-    final double z = acceleration.z;
-    if (_breaths.length < 2) {
-      _breaths.add(z);
-      if (_breaths.length == 2) {
-        _accerating = _breaths[0] < _breaths[1];
-        _prevZ = z;
-      }
-      return;
-    }
-    if (_accerating) {
-      if (z > _prevZ) {
-        _breaths[_breaths.length - 1] = z;
-      } else if (z < _prevZ) {
-        _breaths.add(z);
-        _accerating = false;
-      }
-    } else {
-      if (z < _prevZ) {
-        _breaths[_breaths.length - 1] = z;
-      } else if (z > _prevZ) {
-        _breaths.add(z);
-        _accerating = true;
-      }
-    }
-    _prevZ = z;
-
-    setState(() {
-      _totalBreaths = (_breaths.length / 2).floor();
-    });
   }
 
   @override
@@ -114,16 +81,21 @@ class _BreathCountPageState extends State<BreathCountPage> {
                   color: Colors.black,
                   fontSize: 24.0,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      _totalBreaths == 0 ? 'Start' : '$_totalBreaths',
-                    ),
-                    if (_breathsTimer == null && _totalBreaths != 0)
-                      Text('Restart'),
-                  ],
-                ),
+                child: AnimatedBuilder(
+                    animation: _breathCount,
+                    builder: (context, child) {
+                      final int totalBreaths = _breathCount.totalBreaths;
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            totalBreaths == 0 ? 'Start' : '$totalBreaths',
+                          ),
+                          if (_breathsTimer == null && totalBreaths != 0)
+                            Text('Restart'),
+                        ],
+                      );
+                    }),
               ),
             ),
             Spacer(),
@@ -140,11 +112,11 @@ class _BreathCountPageState extends State<BreathCountPage> {
 
   void _startBreathCount() {
     if (_breathsTimer != null && _breathsTimer.isActive) {
-      _breaths.clear();
+      _breathCount.clearBreaths();
       _stopBreathCounts();
     } else {
-      if (_breaths.isNotEmpty) {
-        _breaths.clear();
+      if (_breathCount.noBreaths) {
+        _breathCount.clearBreaths();
       }
 
       _accelerationSub = accelerometerEvents.listen(_onEvent);
@@ -174,9 +146,13 @@ class _BreathCountPageState extends State<BreathCountPage> {
     final Measurements measurements = Measurements.of(context);
     measurements.modifyMeasurement(
       oldMeasurement: widget.measurement,
-      newMeasurement: widget.measurement
-          .copyWith(value: _totalBreaths ?? widget.measurement.value),
+      newMeasurement: widget.measurement.copyWith(
+          value: _breathCount.totalBreaths ?? widget.measurement.value),
     );
     Navigator.pop(context);
+  }
+
+  void _onEvent(AccelerometerEvent event) {
+    _breathCount.addInhaleExhale(event.z);
   }
 }
